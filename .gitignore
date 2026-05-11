@@ -1,0 +1,21 @@
+# Backups de tarefas
+tarefas/bkp_*/
+
+# Claude Code (config local)
+.claude/
+
+# Pasta de imagens brutas/originais (não é usada pelo site)
+imagens/
+
+# Arquivos de sistema Windows
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários PHP
+*.log
+
+# Config local do Five Server (não vai pro servidor)
+fiveserver.config.js
+
+# Node (se usar futuramente)
+node_modules/
