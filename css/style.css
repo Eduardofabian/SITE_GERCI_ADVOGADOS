@@ -291,10 +291,17 @@ input, select, textarea { font-family: var(--fb); font-size: 14.5px; color: var(
   transition: border-color .2s, box-shadow .2s; -webkit-font-smoothing: auto; }
 input:focus, select:focus, textarea:focus { border-color: var(--azul); box-shadow: 0 0 0 3px rgba(26,75,140,.1); }
 textarea { resize: vertical; }
-.form-ok { text-align: center; padding: 32px 16px; }
+.form-ok { text-align: center; padding: 32px 16px; animation: formOkEntrar .5s ease both; }
 .form-ok i { font-size: 2.8rem; color: #22C55E; display: block; margin-bottom: 14px; }
 .form-ok h3 { font-family: var(--fh); font-size: 1.5rem; color: var(--preto); margin-bottom: 10px; }
 .form-ok p  { color: var(--cinza-txt); margin-bottom: 24px; }
+@keyframes formOkEntrar {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.btn-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4);
+               border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ══ FOOTER ══════════════════════════════ */
 #footer { background: var(--preto); }
@@ -359,20 +366,28 @@ textarea { resize: vertical; }
 .wa-enviar:hover { background: #1ebe57; }
 
 /* ══ COOKIE BANNER ════════════════════════ */
-.cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
+.cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
   background: var(--preto); border-top: 1px solid rgba(255,255,255,.07); padding: 16px 28px;
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
   transform: translateY(100%); transition: transform .4s cubic-bezier(.16,1,.3,1); }
 .cookie-banner.vis { transform: translateY(0); }
 .cookie-texto { font-size: 13px; color: rgba(255,255,255,.5); max-width: 680px; line-height: 1.6; }
 .cookie-link  { color: var(--azul-claro); }
-.cookie-acoes { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-acoes { display: flex; gap: 10px; flex-shrink: 0; position: relative; z-index: 10000; }
 .cookie-btn { font-family: var(--fb); font-size: 12.5px; font-weight: 600;
               padding: 9px 18px; border-radius: 5px; border: none; cursor: pointer; transition: all .25s; }
 .cookie-btn--rec { background: transparent; color: rgba(255,255,255,.38); border: 1px solid rgba(255,255,255,.12); }
 .cookie-btn--rec:hover { color: #fff; border-color: rgba(255,255,255,.35); }
 .cookie-btn--ace { background: var(--azul); color: #fff; }
 .cookie-btn--ace:hover { background: var(--azul-esc); }
+
+/* Cookie banner — garantir clicabilidade */
+.cookie-btn {
+  pointer-events: all !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 10000;
+}
 
 /* ══ GSAP ESTADO INICIAL ══════════════════ */
 .gsap-reveal, .gsap-reveal-left, .gsap-reveal-right { opacity: 0; }

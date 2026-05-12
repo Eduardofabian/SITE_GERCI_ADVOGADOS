@@ -19,3 +19,7 @@ fiveserver.config.js
 
 # Node (se usar futuramente)
 node_modules/
+
+# Composer / PHPMailer
+vendor/
+composer.lock

@@ -1,11 +1,14 @@
-﻿<?php $enviado = isset($_GET['enviado']) ? $_GET['enviado'] : ''; ?>
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gérci Libero da Silva e Advogados Associados — Direito do Trabalho, Previdenciário, Cível, Família e Criminal em Cascavel/PR. Mais de 36 anos de experiência.">
   <title>Gérci Libero — Advogados Associados | Cascavel/PR</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -328,14 +331,15 @@
       </div>
     </div>
     <div class="contato-form-wrap gsap-reveal-right">
-      <?php if ($enviado === 'ok'): ?>
-        <div class="form-ok">
+<!-- Mensagem de sucesso — oculta por padrão, JS exibe após envio -->
+        <div class="form-ok" id="formOk" style="display:none;">
           <i class="fa-solid fa-circle-check"></i>
           <h3>Mensagem recebida!</h3>
           <p>Retornaremos em breve. Para atendimento imediato, use o WhatsApp.</p>
-          <a href="https://wa.me/554533265151" class="btn btn-ouro" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Abrir WhatsApp</a>
+          <a href="https://wa.me/554533265151" class="btn btn-ouro" target="_blank" rel="noopener">
+            <i class="fa-brands fa-whatsapp"></i> Abrir WhatsApp
+          </a>
         </div>
-      <?php else: ?>
         <form class="contato-form" action="contato-envia.php" method="POST">
           <h3 class="form-titulo">Envie sua mensagem</h3>
           <div class="form-grupo"><label for="nome">Nome completo *</label><input type="text" id="nome" name="nome" placeholder="Seu nome" required></div>
@@ -357,9 +361,8 @@
             </select>
           </div>
           <div class="form-grupo"><label for="mensagem">Descreva brevemente seu caso</label><textarea id="mensagem" name="mensagem" rows="4" placeholder="Conte sobre sua situação..."></textarea></div>
-          <button type="submit" class="btn btn-ouro btn-full">Enviar Mensagem <i class="fa-solid fa-paper-plane"></i></button>
+          <button type="button" id="formEnviar" class="btn btn-ouro btn-full">Enviar Mensagem <i class="fa-solid fa-paper-plane"></i></button>
         </form>
-      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -442,7 +445,7 @@
 </div>
 
 <!-- COOKIE BANNER -->
-<div class="cookie-banner" id="cookieBanner">
+<div class="cookie-banner" id="cookieBanner" style="display:none;">
   <div class="cookie-texto">Utilizamos cookies para melhorar sua experiência. Ao continuar navegando, você concorda com nossa <a href="#" class="cookie-link">Política de Privacidade</a>.</div>
   <div class="cookie-acoes">
     <button class="cookie-btn cookie-btn--rec" id="cookieRejeitar">Recusar</button>

@@ -272,19 +272,96 @@ window.addEventListener('load', function () {
     const banner   = document.getElementById('cookieBanner');
     const aceitar  = document.getElementById('cookieAceitar');
     const rejeitar = document.getElementById('cookieRejeitar');
-    if (!banner) return;
+    if (!banner || !aceitar || !rejeitar) return;
 
+    /* Mostrar apenas se ainda não aceitou/rejeitou */
     if (!localStorage.getItem('gerci_cookies')) {
-      setTimeout(() => banner.classList.add('vis'), 1500);
+      setTimeout(() => {
+        banner.style.display = 'flex';
+        banner.classList.add('vis');
+      }, 1500);
+    } else {
+      banner.style.display = 'none';
     }
 
     function fechar(v) {
       localStorage.setItem('gerci_cookies', v);
       banner.classList.remove('vis');
+      setTimeout(() => { banner.style.display = 'none'; }, 500);
     }
 
-    aceitar.addEventListener('click',  () => fechar('aceito'));
-    rejeitar.addEventListener('click', () => fechar('rejeitado'));
+    aceitar.addEventListener('click',  function(e) {
+      e.stopPropagation();
+      fechar('aceito');
+    });
+
+    rejeitar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      fechar('rejeitado');
+    });
+  })();
+
+  /* ══ FORMULÁRIO CONTATO — AJAX ═══════════ */
+  (function initFormContato() {
+    const btnEnviar = document.getElementById('formEnviar');
+    const formOk    = document.getElementById('formOk');
+    const form      = document.querySelector('.contato-form');
+    if (!btnEnviar || !form) return;
+
+    btnEnviar.addEventListener('click', function () {
+      /* Pegar valores */
+      const nome     = document.getElementById('nome')?.value.trim()     || '';
+      const telefone = document.getElementById('telefone')?.value.trim() || '';
+      const email    = document.getElementById('email')?.value.trim()    || '';
+      const area     = document.getElementById('area')?.value            || '';
+      const mensagem = document.getElementById('mensagem')?.value.trim() || '';
+
+      /* Validação mínima */
+      if (!nome || !telefone) {
+        alert('Por favor, preencha seu nome e telefone.');
+        return;
+      }
+
+      /* Visual de carregando */
+      btnEnviar.disabled   = true;
+      btnEnviar.innerHTML  = '<span class="btn-spinner"></span>Enviando...';
+
+      /* Montar FormData */
+      const data = new FormData();
+      data.append('nome',     nome);
+      data.append('telefone', telefone);
+      data.append('email',    email);
+      data.append('area',     area);
+      data.append('mensagem', mensagem);
+
+      /* Enviar via fetch */
+      fetch('contato-envia.php', {
+        method: 'POST',
+        body:   data
+      })
+      .then(res => res.json())
+      .then(json => {
+        if (json.status === 'ok') {
+          /* Fade out do form, fade in do sucesso */
+          form.style.transition = 'opacity .3s ease';
+          form.style.opacity    = '0';
+          setTimeout(() => {
+            form.style.display   = 'none';
+            formOk.style.display = 'block';
+            formOk.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        } else {
+          alert('Ocorreu um erro ao enviar. Por favor, tente pelo WhatsApp.');
+          btnEnviar.disabled  = false;
+          btnEnviar.innerHTML = 'Enviar Mensagem <i class="fa-solid fa-paper-plane"></i>';
+        }
+      })
+      .catch(() => {
+        alert('Erro de conexão. Por favor, tente pelo WhatsApp.');
+        btnEnviar.disabled  = false;
+        btnEnviar.innerHTML = 'Enviar Mensagem <i class="fa-solid fa-paper-plane"></i>';
+      });
+    });
   })();
 
 }); /* fim window.load */
